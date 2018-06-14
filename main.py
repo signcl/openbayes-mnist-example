@@ -6,6 +6,7 @@ import os
 
 parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument("-i", "--input", required=True, type=str, help="path for input data")
+parser.add_argument("-o", "--output", required=True, type=str, help="path for output data")
 args = parser.parse_args()
 
 batch_size = 128
@@ -52,7 +53,8 @@ model.fit(x_train, y_train,
           batch_size=batch_size,
           epochs=epochs,
           verbose=1,
-          validation_data=(x_test, y_test))
+          validation_data=(x_test, y_test),
+          callbacks=[tf.keras.callbacks.TensorBoard(log_dir=args.output)])
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
