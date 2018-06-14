@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import tensorflow as tf
+import argparse
+import os
+
+parser = argparse.ArgumentParser(description="Process some integers.")
+parser.add_argument("-i", "--input", required=True, type=str, help="path for input data")
+args = parser.parse_args()
 
 batch_size = 128
 num_classes = 10
@@ -8,7 +14,8 @@ epochs = 12
 
 img_rows, img_cols = 28, 28
 
-(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist \
+                                         .load_data(os.path.join(args.input, "mnist.npz"))
 
 x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
 x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
