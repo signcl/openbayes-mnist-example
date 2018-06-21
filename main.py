@@ -4,6 +4,7 @@ import tensorflow as tf
 import argparse
 import os
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument("-i", "--input", required=True, type=str, help="path for input data")
 parser.add_argument("-o", "--output", required=True, type=str, help="path for output data")
