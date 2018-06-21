@@ -7,11 +7,12 @@ import os
 parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument("-i", "--input", required=True, type=str, help="path for input data")
 parser.add_argument("-o", "--output", required=True, type=str, help="path for output data")
+parser.add_argument("-e", "--epochs", required=True, type=int, help="epochs")
 args = parser.parse_args()
 
 batch_size = 128
 num_classes = 10
-epochs = 3
+epochs = args.epochs
 
 img_rows, img_cols = 28, 28
 
