@@ -25,11 +25,9 @@ img_rows, img_cols = 28, 28
                                          .load_data(os.path.join(args.input, "mnist.npz"))
 
 x_train = x_train.reshape(-1, img_rows * img_cols) / 255.0
-x_test = x_test.reshape(-1, img_rows * img_cols) / 255.0
 
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
-print(x_test.shape[0], 'test samples')
 
 def create_model():
   model = tf.keras.models.Sequential([
@@ -55,7 +53,6 @@ tb_callback = tf.keras.callbacks.TensorBoard(log_dir=log_path)
 model.fit(x_train, y_train,
           epochs=epochs,
           verbose=1,
-          validation_data=(x_test, y_test),
           callbacks=[cp_callback, tb_callback])
 model.save(os.path.join(model_path, model_name))
 print('done')

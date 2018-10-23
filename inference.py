@@ -16,10 +16,8 @@ img_rows, img_cols = 28, 28
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist \
                                          .load_data(os.path.join(args.input, "mnist.npz"))
 
-x_train = x_train.reshape(-1, img_rows * img_cols) / 255.0
 x_test = x_test.reshape(-1, img_rows * img_cols) / 255.0
 
-print('x_train shape:', x_train.shape)
 print(x_test.shape[0], 'test samples')
 
 model = tf.keras.models.load_model(args.modelpath)
