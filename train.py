@@ -57,8 +57,5 @@ model.fit(x_train, y_train,
           verbose=1,
           validation_data=(x_test, y_test),
           callbacks=[cp_callback, tb_callback])
-score = model.evaluate(x_test, y_test, verbose=0)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
-
 model.save(os.path.join(model_path, model_name))
+print('done')
