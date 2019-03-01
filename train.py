@@ -10,9 +10,10 @@ parser.add_argument("-i", "--input", required=True, type=str, help="path for inp
 parser.add_argument("-o", "--output", required=True, type=str, help="path for output data")
 parser.add_argument("-m", "--modelname", default="model.h5", type=str, help="model name")
 parser.add_argument("-e", "--epochs", required=True, type=int, help="epochs")
+parser.add_argument("-l", "--logdir", default="./tf_dir", type=str, help="tensorboard data")
 args = parser.parse_args()
 
-log_path = args.output
+log_path = args.logdir
 checkpoint_path = os.path.join(args.output, 'cp.ckpt')
 model_path = args.output
 model_name = args.modelname
