@@ -35,17 +35,19 @@ print(x_train.shape[0], 'train samples')
 class OpenBayesMetricsCallback(tf.keras.callbacks.Callback):
     def on_batch_end(self, batch, logs=None):
         """Print Training Metrics"""
-        if batch % 300 == 0:
+        if batch % 5000 == 0:
           openbayestool.log_metric('acc', float(logs.get('acc')))
+          # 如果在 tensorflow 2.0 必须使用 accuracy 而不是 acc
+          # openbayestool.log_metric('acc', float(logs.get('accuracy')))
           openbayestool.log_metric('loss', float(logs.get('loss')))
         
 
 def create_model():
   model = tf.keras.models.Sequential([
-  tf.keras.layers.Dense(512, activation=tf.nn.relu, input_shape=(img_rows * img_cols,)),
-  tf.keras.layers.Dropout(0.2),
-  tf.keras.layers.Dense(num_classes, activation=tf.nn.softmax)
-])
+    tf.keras.layers.Dense(512, activation=tf.nn.relu, input_shape=(img_rows * img_cols,)),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(num_classes, activation=tf.nn.softmax)
+  ])
 
   model.compile(optimizer='adam',
                 loss='sparse_categorical_crossentropy',
