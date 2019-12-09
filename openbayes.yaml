@@ -1,8 +1,8 @@
 resource: cpu
-env: tensorflow-2.0.0
+env: tensorflow-1.14
 parameters:
   output: /output
-  modelname: model
+  modelname: model.h5
   epoch: 5
   logdir: /output/tf_dir
 command: python train.py
