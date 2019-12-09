@@ -2,20 +2,20 @@
 
 import tensorflow as tf
 import argparse
+import datetime
 import os
 
 import openbayestool
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 parser = argparse.ArgumentParser(description="Process some integers.")
-parser.add_argument("-i", "--input", required=True, type=str, help="path for input data")
 parser.add_argument("-o", "--output", required=True, type=str, help="path for output data")
-parser.add_argument("-m", "--modelname", default="model.h5", type=str, help="model name")
+parser.add_argument("-m", "--modelname", default="model", type=str, help="model save target")
 parser.add_argument("-e", "--epochs", required=True, type=int, help="epochs")
 parser.add_argument("-l", "--logdir", default="./tf_dir", type=str, help="tensorboard data")
 args = parser.parse_args()
 
-log_path = args.logdir
+log_path = os.path.join(args.logdir, datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
 checkpoint_path = os.path.join(args.output, 'cp.ckpt')
 model_path = args.output
 model_name = args.modelname
@@ -25,7 +25,7 @@ epochs = args.epochs
 img_rows, img_cols = 28, 28
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist \
-                                         .load_data(os.path.join(args.input, "mnist.npz"))
+                                         .load_data()
 
 x_train = x_train.reshape(-1, img_rows * img_cols) / 255.0
 
@@ -36,11 +36,11 @@ class OpenBayesMetricsCallback(tf.keras.callbacks.Callback):
     def on_batch_end(self, batch, logs=None):
         """Print Training Metrics"""
         if batch % 5000 == 0:
-          openbayestool.log_metric('acc', float(logs.get('acc')))
           # 如果在 tensorflow 2.0 必须使用 accuracy 而不是 acc
           # openbayestool.log_metric('acc', float(logs.get('accuracy')))
+          openbayestool.log_metric('acc', float(logs.get('acc')))
           openbayestool.log_metric('loss', float(logs.get('loss')))
-        
+
 
 def create_model():
   model = tf.keras.models.Sequential([

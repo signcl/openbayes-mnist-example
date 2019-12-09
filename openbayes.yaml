@@ -1,0 +1,8 @@
+resource: cpu
+env: tensorflow-2.0.0
+parameters:
+  output: /output
+  modelname: model
+  epoch: 5
+  logdir: /output/tf_dir
+command: python train.py
