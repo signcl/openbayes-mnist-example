@@ -6,7 +6,6 @@ import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 parser = argparse.ArgumentParser(description="Process some integers.")
-parser.add_argument("-i", "--input", required=True, type=str, help="path for input data")
 parser.add_argument("-m", "--modelpath", required=True, type=str, help="model file name")
 args = parser.parse_args()
 
@@ -14,7 +13,7 @@ num_classes = 10
 img_rows, img_cols = 28, 28
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist \
-                                         .load_data(os.path.join(args.input, "mnist.npz"))
+                                         .load_data()
 
 x_test = x_test.reshape(-1, img_rows * img_cols) / 255.0
 
