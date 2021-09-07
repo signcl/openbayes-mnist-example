@@ -27,7 +27,7 @@ resource: cpu
 ## env
 #  指使用什么运行时环境，通过命令 bayes gear env 可以查看支持的运行时环境
 #
-env: pytorch-1.6.0
+env: pytorch-1.9
 
 ## command
 #  只有在创建「脚本执行」时需要，指任务执行时的入口命令
