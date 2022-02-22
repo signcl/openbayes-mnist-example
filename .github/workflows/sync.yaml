@@ -1,0 +1,23 @@
+name: sync-gitee
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    name: Git Repo Sync
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: aisensiy/git-repo-sync@master
+      with:
+        target-url: gitee.com/openbayes/openbayes-mnist-example.git
+        target-username: aisensiy
+        target-token: ${{ secrets.GITEE_AISENSIY_API_TOKEN }}
+        target-branch: master
+
