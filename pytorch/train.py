@@ -8,7 +8,7 @@ from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 
 import openbayestool
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 
 
 class Net(nn.Module):
@@ -37,7 +37,7 @@ class Net(nn.Module):
         return output
 
 
-def train(args, model, device, train_loader, optimizer, epoch, writer):
+def train(args, model, device, train_loader, optimizer, epoch, writer=None):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -50,10 +50,11 @@ def train(args, model, device, train_loader, optimizer, epoch, writer):
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.item()))
-            writer.add_scalar('training loss', loss.item(), epoch * len(train_loader) + batch_idx)
+            if writer:
+                writer.add_scalar('training loss', loss.item(), epoch * len(train_loader) + batch_idx)
 
 
-def test(model, device, test_loader, epoch, writer):
+def test(model, device, test_loader, epoch, writer=None):
     model.eval()
     test_loss = 0
     correct = 0
@@ -70,8 +71,9 @@ def test(model, device, test_loader, epoch, writer):
     print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
-    writer.add_scalar('test loss', test_loss, epoch)
-    writer.add_scalar('test acc', correct / len(test_loader.dataset), epoch)
+    if writer:
+      writer.add_scalar('test loss', test_loss, epoch)
+      writer.add_scalar('test acc', correct / len(test_loader.dataset), epoch)
     openbayestool.log_metric('loss', test_loss)
     openbayestool.log_metric('acc', correct / len(test_loader.dataset))
 
@@ -102,7 +104,7 @@ def main():
 
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    writer = SummaryWriter(os.path.join(args.logdir, 'mnist_experiment_1'))
+    # writer = SummaryWriter(os.path.join(args.logdir, 'mnist_experiment_1'))
 
     train_kwargs = {'batch_size': args.batch_size}
     test_kwargs = {'batch_size': args.test_batch_size}
@@ -129,8 +131,8 @@ def main():
 
     scheduler = StepLR(optimizer, step_size=1, gamma=0.7)
     for epoch in range(1, args.epochs + 1):
-        train(args, model, device, train_loader, optimizer, epoch, writer)
-        test(model, device, test_loader, epoch, writer)
+        train(args, model, device, train_loader, optimizer, epoch)
+        test(model, device, test_loader, epoch)
         scheduler.step()
 
     if args.save_model:
