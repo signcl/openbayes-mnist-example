@@ -36,9 +36,10 @@ class OpenBayesMetricsCallback(tf.keras.callbacks.Callback):
     def on_batch_end(self, batch, logs=None):
         """Print Training Metrics"""
         if batch % 5000 == 0:
-          # 如果在 tensorflow 2.0 必须使用 accuracy 而不是 acc
-          # openbayestool.log_metric('acc', float(logs.get('accuracy')))
-          openbayestool.log_metric('acc', float(logs.get('acc')))
+          if tf.__version__.startswith('2'):
+            openbayestool.log_metric('acc', float(logs.get('accuracy')))
+          else:
+            openbayestool.log_metric('acc', float(logs.get('acc')))
           openbayestool.log_metric('loss', float(logs.get('loss')))
 
 
