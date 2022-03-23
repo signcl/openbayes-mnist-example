@@ -9,9 +9,9 @@ import openbayestool
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 parser = argparse.ArgumentParser(description="Process some integers.")
-parser.add_argument("-o", "--output", required=True, type=str, help="path for output data")
+parser.add_argument("-o", "--output", default="./model", type=str, help="path for output data")
 parser.add_argument("-m", "--modelname", default="model", type=str, help="model save target")
-parser.add_argument("-e", "--epochs", required=True, type=int, help="epochs")
+parser.add_argument("-e", "--epochs", default=10, type=int, help="epochs")
 parser.add_argument("-l", "--logdir", default="./tf_dir", type=str, help="tensorboard data")
 args = parser.parse_args()
 
